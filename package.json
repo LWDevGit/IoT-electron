@@ -1,0 +1,17 @@
+{
+  "name": "IoT",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "electron_build_win64": "electron-packager . IoT --win --out=release --arch=x64 --app-version=1.0.0 --electron-version=4.0.0 --overwrite --icon=./www/favicon.ico --asar",
+    "dev": "electron . --debug"
+  },
+  "dependencies": {
+    "serialport": "^7.1.5"
+  },
+  "devDependencies": {
+    "electron-prebuilt": "^1.4.13",
+    "electron-rebuild": "^1.8.5"
+  }
+}
