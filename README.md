@@ -8,7 +8,7 @@
 >blockbot及ikakabot系列机器人控制器应用程序，采用electron框架，基于串口通信
 
 ## 界面
-![ui界面](https://github.com/LinWeiGitHub/IoT-electron/ui.png)
+![image](https://github.com/LinWeiGitHub/IoT-electron/blob/master/ui.png)
 
 ## 使用
 - step1 工具准备
