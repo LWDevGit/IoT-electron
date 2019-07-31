@@ -37,6 +37,9 @@
     padding: 15px;
     overflow-y: scroll;
     overflow-x: hidden;
+
+    word-wrap: break-word;
+    word-break: normal;
 }
 
 .send-box {

@@ -1,8 +1,8 @@
 ﻿# IoT-electron
 ## 版本
->1.0.0 r01
+>1.0.0 (002)
 ## 版本描述
->完成electron项目创建，加入ipc通信、serialport，移植electron-serialport代码
+>完善UI界面，完善一些数据处理和显示的方式
 
 ## 说明
 >blockbot及ikakabot系列机器人控制器应用程序，采用electron框架，基于串口通信
@@ -33,6 +33,7 @@
 ### 开发指南
 - [electron文档](https://electronjs.org/docs)
 - [serialport文档](https://serialport.io/docs/guide-usage)
+- [jQuery教程](https://www.runoob.com/jquery/jquery-tutorial.html)
 
 ### 开源代码
 - [electron-serialport](https://github.com/PowerDos/electron-serialport)
