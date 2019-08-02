@@ -1,11 +1,25 @@
 ﻿# IoT-electron
 ## 版本
->1.0.0 (002)
+>1.0.0 (003)
 ## 版本描述
->完善UI界面，完善一些数据处理和显示的方式
+>增加的功能
+- 发送回车
+- 自动换行（基于定时器固定时间间隔，后续版本改为按波特率动态调整判断的间隔）
+- 波特率选择列表
+- 增加各事件的监控和处理
+- 优化数据接收的方式
+>准备增加的功能
+- ascii和hex的转换
+- 校验位，数据位，停止位的设置
+- 波特率的动态修改
+- 自定义波特率
+- 动态刷新COM
+- 定时发送数据
 
 ## 说明
->blockbot及ikakabot系列机器人控制器应用程序，采用electron框架，基于串口通信
+>采用electron框架，基于serialport
+- Milestone1： 串口调试助手
+- Milestone2： blockbot和ikakabot系列机器人的控制器
 
 ## 界面
 ![image](https://github.com/LinWeiGitHub/IoT-electron/blob/master/ui.png)

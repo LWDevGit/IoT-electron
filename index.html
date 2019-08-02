@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="static/favicon.ico">
-    <title>IoT Desktop 1.0.0(002)</title>
+    <title>IoT Desktop 1.0.0(003)</title>
     <script src="./public/js/flexible.js"></script>
     <link rel="stylesheet" href="./public/css/bootstrap.min.css">
     <link rel="stylesheet" href="./public/css/index.css">
@@ -23,7 +23,9 @@
                 </div>
                 <div class="form-group">
                     <label for="BaudRate">波特率</label>
-                    <input type="text" class="form-control" id="BaudRate" value="9600">
+                    <!--<input type="text" class="form-control" id="BaudRate" value="9600">-->
+                    <select id="BaudRate" class="form-control rate">
+                    </select>
                 </div>
             </div>
             <div class="submit-data">
@@ -35,6 +37,10 @@
             <div class="receive-box">
                 <div class="send-header">
                     <label>接收数据</label>
+                    <label>
+                        <input type="checkbox" value="" id="auto-wrap">
+                        自动换行
+                    </label>
                 </div>
                 <div class="receive-windows">
                 </div>
@@ -43,6 +49,10 @@
             <div class="send-box">
                 <div class="send-header">
                     <label>发送数据</label>
+                    <label>
+                        <input type="checkbox" value="" id="enter-checked">
+                          发送回车
+                    </label>
                 </div>
                 <div class="send-windows">
                     <textarea class="input-send-data"></textarea>
