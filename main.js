@@ -7,13 +7,13 @@ const url = require('url')
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let isDev = true;
-let splash;
-let mainWindow;
 
 let mainFrameLoaded = false;
 let closeWd = false;
-
 let initFile = null;
+
+let splash = null;
+let mainWindow = null;
 
 // 保证单一窗口启动，安装serialport后不可用，原因未明
 const gotTheLock = true;//app.requestSingleInstanceLock();

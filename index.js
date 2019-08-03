@@ -4,6 +4,8 @@
 /*
  * jQuery语法  $(selector).action()
  */
+var utils = require("./public/js/utils");
+
 window.$ = window.jQuery = require('./public/js/jquery.min.js');
 
 //参数
@@ -11,6 +13,7 @@ var revCount = 0;
 var revCountTemp = 0;
 var rateArray = [9600, 14400, 19200, 38400, 56000, 115200, 256000];
 var serialData = '';
+var sendData = '';
 var timerRev;
 
 function wrapEvent() {
@@ -24,10 +27,22 @@ function wrapEvent() {
             {
                 revCountTemp = revCount = 0;
 
+                //ascii显示
+                if($("#optionsRevStrDisplay").is(":checked") == true){
+                    console.log('optionsRevStrDisplay',$("#optionsRevStrDisplay").is(":checked"))
+                }
+                //hex显示
+                if($("#optionsRevHexDisplay").is(":checked") == true){
+                    serialData = utils.str2hexToDis(serialData);
+                    console.log('optionsRevHexDisplay',$("#optionsRevHexDisplay").is(":checked"))
+                }
+
                 $('.receive-windows').append(serialData.toString());
+
                 //自动换行
                 if($("#auto-wrap").is(":checked") == true){ $('.receive-windows').append('<br/>'); }
-                console.log('checked',$("#auto-wrap").is(":checked"))
+                console.log('auto-wrap',$("#auto-wrap").is(":checked"))
+
                 serialData = '';
             }
             else{
@@ -51,6 +66,16 @@ serialport.list((err, ports) => {
     }
     console.log(ports);
 });
+
+//input textarea控件监听
+$('textarea#inputTextarea').keyup(function () {
+    //hex发送时只能输入限定字符
+    if($("#optionsSendHexDisplay").is(":checked") == true){
+        console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
+        var text = $(this).val().replace(/[^\a-f,A-F,0-9], /g, "");
+        $(this).val(text)
+    }
+})
 
 //BaudRate控件监听
 $('select#BaudRate').change(function () {
@@ -103,7 +128,7 @@ $('.btn-submit').click((data) => {
 
     //data事件监听
     port.on('data', data => {
-        console.log(`DATA: ${data}`);
+        //console.log(`DATA: ${data}`);
         serialData += data;
         revCount += 1;
     })
@@ -122,15 +147,47 @@ $('.btn-cancle').click(() => {
     port.close();
 });
 
+//sendRadio控件监听
+$('input#optionsSendStrDisplay').change(function () {
+    console.log('optionsSendStrDisplay',$(this).val());
+    sendData = $('.input-send-data').val();
+    let sendDataDis = utils.hex2str(sendData);
+    $('.input-send-data').val(sendDataDis);
+})
+
+//sendRadio控件监听
+$('input#optionsSendHexDisplay').change(function () {
+    console.log('optionsSendHexDisplay',$(this).val());
+    sendData = $('.input-send-data').val();
+    let sendDataDis = utils.str2hexToDis(sendData).toUpperCase();
+    $('.input-send-data').val(sendDataDis);
+})
+
 // 点击发送数据
 $('.btn-send').click(() => {
-    var sendData = $('.input-send-data').val();
+    //ascii发送
+    if($("#optionsSendStrDisplay").is(":checked") == true){
+        console.log('optionsSendStrDisplay',$("#optionsSendStrDisplay").is(":checked"))
+        sendData = $('.input-send-data').val();
+    }
+    //hex发送
+    if($("#optionsSendHexDisplay").is(":checked") == true){
+        console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
+        sendData = $('.input-send-data').val();
+
+        //sendData = Buffer.from(sendData,'ascii').toString('hex')
+        sendData = utils.hex2str(sendData)
+    }
+
     //发送回车
     if($("#enter-checked").is(":checked") == true){ sendData += '\r\n'; }
-    console.log('checked',$("#enter-checked").is(":checked"))
+    console.log('enter-checked',$("#enter-checked").is(":checked"))
 
     if (port != {} && port != null) {
         console.log(`SendData: ${sendData}`);
+        /*var test = new Array();
+        test[0] = 0xA0;
+        console.log(`SendData: ${test}`);*/
         port.write(sendData, (err) =>{
             if (err) return console.log('write Error: ', err.message);
         });
