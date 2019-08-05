@@ -7,15 +7,17 @@ function str2hexToDis(str) {
         return
     }
     var val = "";
+    //var arr = str.split("");
+    //console.log('arr',arr)
     for(let i = 0; i < str.length; i++){
+        //console.log('parseInt',parseInt(arr[i],16))
         if(val == "")
-            val = str.charCodeAt(i).toString(16);
+           val += str.charCodeAt(i).toString(16).toUpperCase() + ' ';
+            //val += parseInt(arr[i],16) + ' ';
         else
-            val += ' ' + str.charCodeAt(i).toString(16).toUpperCase();
+           val += str.charCodeAt(i).toString(16).toUpperCase() + ' ';
+            //val += ' ' + parseInt(arr[i],16);
     }
-    //val = val.replace(/,/g," ")
-    //转大写字母
-    //val = val.toUpperCase()
     console.log('str2hexToDis',val)
     return val
 }
@@ -59,7 +61,7 @@ function hex2strToDis(hex) {
     return val
 }
 
-function hex2str(hex) {
+function hex2array(hex) {
     if(hex == ""){
         console.log("hex2str hex is null")
         return
@@ -83,6 +85,6 @@ function hex2str(hex) {
 module.exports = {
     str2hex: str2hex,
     str2hexToDis: str2hexToDis,
-    hex2str: hex2str,
+    hex2array: hex2array,
     hex2strToDis: hex2strToDis
 }

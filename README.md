@@ -1,10 +1,11 @@
 ﻿# IoT-electron
 ## 版本
->1.0.0 (005)
+>1.0.0 (006)
 ## 版本描述
 >增加的功能
 - 接收的ascii和hex转换(存在hex数据显示错误问题，下版本修复)
 - 发送的ascii和hex转换
+- 修复显示bug
 >准备增加的功能
 - 校验位，数据位，停止位的设置
 - 波特率的动态修改
@@ -44,6 +45,7 @@
 - [electron文档](https://electronjs.org/docs)
 - [serialport文档](https://serialport.io/docs/guide-usage)
 - [jQuery教程](https://www.runoob.com/jquery/jquery-tutorial.html)
+- [node.js文档 - Buffers and Character Encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
 
 ### 开源代码
 - [electron-serialport](https://github.com/PowerDos/electron-serialport)

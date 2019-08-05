@@ -13,45 +13,48 @@ var revCount = 0;
 var revCountTemp = 0;
 var rateArray = [9600, 14400, 19200, 38400, 56000, 115200, 256000];
 var serialData = '';
+var serialHexData = new Array();
 var sendData = '';
 var sendHexData = new Array();
 var timerRev;
 
 function wrapEvent() {
-    if(port.isOpen == true)
-    {
-        if(revCount > 0)
-        {
-            console.log('revCountTemp',revCountTemp)
-            console.log('revCount',revCount)
-            if(revCountTemp == revCount)
-            {
+    if(port.isOpen == true) {
+        if(revCount > 0) {
+            //console.log('revCountTemp',revCountTemp)
+            //console.log('revCount',revCount)
+            if(revCountTemp == revCount) {
                 revCountTemp = revCount = 0;
 
                 //ascii显示
                 if($("#optionsRevStrDisplay").is(":checked") == true){
-                    console.log('optionsRevStrDisplay',$("#optionsRevStrDisplay").is(":checked"))
+                    //console.log('optionsRevStrDisplay',$("#optionsRevStrDisplay").is(":checked"))
+                    $('.receive-windows').append(serialData.toString());
+                    serialData = '';
                 }
                 //hex显示
                 if($("#optionsRevHexDisplay").is(":checked") == true){
-                    serialData = utils.str2hexToDis(serialData);
-                    console.log('optionsRevHexDisplay',$("#optionsRevHexDisplay").is(":checked"))
+                    //serialData = utils.str2hexToDis(serialData);
+                    for(let i = 0; i < serialHexData.length; i++){
+                        console.log('serialHexData',serialHexData[i])
+                    }
+                    let serialHexDataToDis = serialHexData.join(' ');
+                    console.log('serialHexDataToDis',serialHexDataToDis)
+                    $('.receive-windows').append(serialHexDataToDis.toString());
+                    //console.log('optionsRevHexDisplay',$("#optionsRevHexDisplay").is(":checked"))
+                    serialHexData = [];
                 }
-
-                $('.receive-windows').append(serialData.toString());
 
                 //自动换行
                 if($("#auto-wrap").is(":checked") == true){ $('.receive-windows').append('<br/>'); }
-                console.log('auto-wrap',$("#auto-wrap").is(":checked"))
+                //console.log('auto-wrap',$("#auto-wrap").is(":checked"))
 
-                serialData = '';
             }
             else{
                 revCountTemp = revCount;
             }
         }
     }
-
 }
 
 //初始化
@@ -72,7 +75,7 @@ serialport.list((err, ports) => {
 $('textarea#inputTextarea').keyup(function () {
     //hex发送时只能输入限定字符
     if($("#optionsSendHexDisplay").is(":checked") == true){
-        console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
+        //console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
         var text = $(this).val().replace(/[^\a-f,A-F,0-9], /g, "");
         $(this).val(text)
     }
@@ -83,8 +86,7 @@ $('select#BaudRate').change(function () {
     console.log($(this).val());
     //port.baudRate = $(this).val();
     //如果打开串口则动态更新波特率
-    if(port.isOpen == true)
-    {
+    if(port.isOpen == true) {
         /*port.update('baudRate',() => {
             baudRate: parseInt($(this).val());
         });*/
@@ -130,7 +132,12 @@ $('.btn-submit').click((data) => {
     //data事件监听
     port.on('data', data => {
         //console.log(`DATA: ${data}`);
-        serialData += data;
+        if($("#optionsRevStrDisplay").is(":checked") == true){
+            serialData += data;
+        }
+        if($("#optionsRevHexDisplay").is(":checked") == true){
+            serialHexData[revCount] = data;
+        }
         revCount += 1;
     })
 
@@ -150,7 +157,7 @@ $('.btn-cancle').click(() => {
 
 //sendRadio控件监听
 $('input#optionsSendStrDisplay').change(function () {
-    console.log('optionsSendStrDisplay',$(this).val());
+    //console.log('optionsSendStrDisplay',$(this).val());
     sendData = $('.input-send-data').val();
     let sendDataDis = utils.hex2strToDis(sendData);
     $('.input-send-data').val(sendDataDis);
@@ -158,7 +165,7 @@ $('input#optionsSendStrDisplay').change(function () {
 
 //sendRadio控件监听
 $('input#optionsSendHexDisplay').change(function () {
-    console.log('optionsSendHexDisplay',$(this).val());
+    //console.log('optionsSendHexDisplay',$(this).val());
     sendData = $('.input-send-data').val();
     let sendDataDis = utils.str2hexToDis(sendData).toUpperCase();
     $('.input-send-data').val(sendDataDis);
@@ -168,12 +175,12 @@ $('input#optionsSendHexDisplay').change(function () {
 $('.btn-send').click(() => {
     //ascii发送
     if($("#optionsSendStrDisplay").is(":checked") == true){
-        console.log('optionsSendStrDisplay',$("#optionsSendStrDisplay").is(":checked"))
+        //console.log('optionsSendStrDisplay',$("#optionsSendStrDisplay").is(":checked"))
         sendData = $('.input-send-data').val();
 
         //发送回车
         if($("#enter-checked").is(":checked") == true){ sendData += '\r\n'; }
-        console.log('enter-checked',$("#enter-checked").is(":checked"))
+        //console.log('enter-checked',$("#enter-checked").is(":checked"))
 
         if (port != {} && port != null) {
             console.log(`SendData: ${sendData}`);
@@ -185,25 +192,25 @@ $('.btn-send').click(() => {
     }
     //hex发送
     if($("#optionsSendHexDisplay").is(":checked") == true){
-        console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
+        //console.log('optionsSendHexDisplay',$("#optionsSendHexDisplay").is(":checked"))
         sendData = $('.input-send-data').val();
 
         //sendData = Buffer.from(sendData,'ascii').toString('hex')
-        sendHexData = utils.hex2str(sendData)
+        sendHexData = utils.hex2array(sendData)
 
         //发送回车
         if($("#enter-checked").is(":checked") == true){
             sendHexData.push(0x0D)
             sendHexData.push(0x0A)
         }
-        console.log('enter-checked',$("#enter-checked").is(":checked"))
+        //console.log('enter-checked',$("#enter-checked").is(":checked"))
 
         if (port != {} && port != null) {
             console.log(`sendHexData: ${sendHexData}`);
 
             port.write(sendHexData, (err) =>{
                 if (err) return console.log('write Error: ', err.message);
-        });
+            });
         }
     }
 })
