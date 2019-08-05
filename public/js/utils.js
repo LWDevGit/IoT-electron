@@ -39,11 +39,12 @@ function str2hex(str) {
     return val
 }
 
-function hex2str(hex) {
-    if(hex == ""){
-        console.log("hex2str hex is null")
+function hex2strToDis(hex) {
+    if(hex == "") {
+        console.log("hex2strToDis hex is null")
         return
     }
+
     var val = "";
     var arr = hex.split(" ");
     console.log('arr',arr)
@@ -54,6 +55,27 @@ function hex2str(hex) {
             val += String.fromCharCode(parseInt(arr[i],16));
         }
     }
+    console.log("hex2strToDis",val)
+    return val
+}
+
+function hex2str(hex) {
+    if(hex == ""){
+        console.log("hex2str hex is null")
+        return
+    }
+    var val = new Array();
+    var arr = hex.split(" ");
+    console.log('arr',arr)
+    for(var i = 0; i < arr.length; i++){
+        /*console.log('string charcode',String.fromCharCode(parseInt(arr[i],16)))
+        if(String.fromCharCode(parseInt(arr[i],16)) != null)
+        {
+            val[i] += String.fromCharCode(parseInt(arr[i],16));
+        }*/
+        console.log('parseInt',parseInt(arr[i],16))
+        val[i] = parseInt(arr[i],16)
+    }
     console.log('hex2str',val)
     return val
 }
@@ -61,5 +83,6 @@ function hex2str(hex) {
 module.exports = {
     str2hex: str2hex,
     str2hexToDis: str2hexToDis,
-    hex2str: hex2str
+    hex2str: hex2str,
+    hex2strToDis: hex2strToDis
 }

@@ -14,6 +14,7 @@ var revCountTemp = 0;
 var rateArray = [9600, 14400, 19200, 38400, 56000, 115200, 256000];
 var serialData = '';
 var sendData = '';
+var sendHexData = new Array();
 var timerRev;
 
 function wrapEvent() {
@@ -151,7 +152,7 @@ $('.btn-cancle').click(() => {
 $('input#optionsSendStrDisplay').change(function () {
     console.log('optionsSendStrDisplay',$(this).val());
     sendData = $('.input-send-data').val();
-    let sendDataDis = utils.hex2str(sendData);
+    let sendDataDis = utils.hex2strToDis(sendData);
     $('.input-send-data').val(sendDataDis);
 })
 
@@ -169,6 +170,18 @@ $('.btn-send').click(() => {
     if($("#optionsSendStrDisplay").is(":checked") == true){
         console.log('optionsSendStrDisplay',$("#optionsSendStrDisplay").is(":checked"))
         sendData = $('.input-send-data').val();
+
+        //发送回车
+        if($("#enter-checked").is(":checked") == true){ sendData += '\r\n'; }
+        console.log('enter-checked',$("#enter-checked").is(":checked"))
+
+        if (port != {} && port != null) {
+            console.log(`SendData: ${sendData}`);
+
+            port.write(sendData, (err) =>{
+                if (err) return console.log('write Error: ', err.message);
+            });
+        }
     }
     //hex发送
     if($("#optionsSendHexDisplay").is(":checked") == true){
@@ -176,21 +189,22 @@ $('.btn-send').click(() => {
         sendData = $('.input-send-data').val();
 
         //sendData = Buffer.from(sendData,'ascii').toString('hex')
-        sendData = utils.hex2str(sendData)
-    }
+        sendHexData = utils.hex2str(sendData)
 
-    //发送回车
-    if($("#enter-checked").is(":checked") == true){ sendData += '\r\n'; }
-    console.log('enter-checked',$("#enter-checked").is(":checked"))
+        //发送回车
+        if($("#enter-checked").is(":checked") == true){
+            sendHexData.push(0x0D)
+            sendHexData.push(0x0A)
+        }
+        console.log('enter-checked',$("#enter-checked").is(":checked"))
 
-    if (port != {} && port != null) {
-        console.log(`SendData: ${sendData}`);
-        /*var test = new Array();
-        test[0] = 0xA0;
-        console.log(`SendData: ${test}`);*/
-        port.write(sendData, (err) =>{
-            if (err) return console.log('write Error: ', err.message);
+        if (port != {} && port != null) {
+            console.log(`sendHexData: ${sendHexData}`);
+
+            port.write(sendHexData, (err) =>{
+                if (err) return console.log('write Error: ', err.message);
         });
+        }
     }
 })
 // 清空接收的数据
