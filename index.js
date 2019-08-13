@@ -14,6 +14,7 @@ var revCountTemp = 0;
 var rateArray = [9600, 14400, 19200, 38400, 56000, 115200, 256000];
 var serialData = '';
 var serialHexData = new Array();
+var serialHexDataToDis = '';
 var sendData = '';
 var sendHexData = new Array();
 var timerRev;
@@ -34,15 +35,16 @@ function wrapEvent() {
                 }
                 //hex显示
                 if($("#optionsRevHexDisplay").is(":checked") == true){
-                    //serialData = utils.str2hexToDis(serialData);
-                    for(let i = 0; i < serialHexData.length; i++){
-                        console.log('serialHexData',serialHexData[i])
+
+                    console.log('serialHexData',serialHexData)
+                    for(i=0; i<serialHexData.length; i++){
+                        //console.log(serialHexData[i]<16?"0x0"+serialHexData[i].toString('hex').toUpperCase():"0x"+serialHexData[i].toString('hex').toUpperCase())
+                        //console.log(serialHexData[i]<16? serialHexData[i].toString('hex').toUpperCase(): serialHexData[i].toString('hex').toUpperCase())
+                        serialHexDataToDis += (serialHexData[i]<16? serialHexData[i].toString('hex').toUpperCase(): serialHexData[i].toString('hex').toUpperCase()) + ' '
                     }
-                    let serialHexDataToDis = serialHexData.join(' ');
-                    console.log('serialHexDataToDis',serialHexDataToDis)
-                    $('.receive-windows').append(serialHexDataToDis.toString());
-                    //console.log('optionsRevHexDisplay',$("#optionsRevHexDisplay").is(":checked"))
-                    serialHexData = [];
+                    $('.receive-windows').append(serialHexDataToDis);
+
+                    serialHexDataToDis = '';
                 }
 
                 //自动换行
