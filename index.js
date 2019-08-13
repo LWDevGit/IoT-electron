@@ -12,6 +12,8 @@ window.$ = window.jQuery = require('./public/js/jquery.min.js');
 var revCount = 0;
 var revCountTemp = 0;
 var rateArray = [9600, 14400, 19200, 38400, 56000, 115200, 256000];
+//var parityArray = ['none','even','mark','odd','space'];
+//var dataBitsArray = [5, 6, 7, 8];
 var serialData = '';
 var serialHexData = new Array();
 var serialHexDataToDis = '';
@@ -59,10 +61,18 @@ function wrapEvent() {
     }
 }
 
-//初始化
+//初始化波特率
 for(let i=0; i<rateArray.length; i++){
     $('.rate').append('<option>'+rateArray[i]+'</option>')
 };
+
+/*for(let i=0; i<parityArray.length; i++){
+    $('.parityValue').append('<option>'+parityArray[i]+'</option>')
+};
+
+for(let i=0; i<dataBitsArray.length; i++){
+    $('.dataBitsValue').append('<option>'+dataBitsArray[i]+'</option>')
+};*/
 
 let serialport = require('serialport');
 let port = null;
@@ -84,7 +94,7 @@ $('textarea#inputTextarea').keyup(function () {
 })
 
 //BaudRate控件监听
-$('select#BaudRate').change(function () {
+$('select#baudRate').change(function () {
     console.log($(this).val());
     //port.baudRate = $(this).val();
     //如果打开串口则动态更新波特率
@@ -94,17 +104,34 @@ $('select#BaudRate').change(function () {
         });*/
     }
 })
+//点击刷新com
+$('select#disabledSelect').click(function () {
+    console.log('select click')
+    $("select#disabledSelect").empty()
+
+    serialport.list((err, ports) => {
+        for (let item of ports) {
+            $('.com').append(`<option>${item.comName + " #" + item.manufacturer}</option>`)
+        }
+        console.log(ports);
+    });
+})
 
 // 打开串口
 $('.btn-submit').click((data) => {
+
     let COM = ($('select option:selected').text()).split(' #')[0];
 
-    let BaudRate = $('#BaudRate').val();
+    let baudRate = $('#baudRate').val();
+    //let parity = $('#parity').val();
+    //let dataBits = $('#dataBits').val();
     console.log(COM);
-    console.log(BaudRate);
+    console.log(baudRate);
+    //console.log(parity);
+    //console.log(dataBits);
 
     port = new serialport(COM, {
-        baudRate: parseInt(BaudRate),
+        baudRate: parseInt(baudRate),
         dataBits: 8,
         parity: 'none',
         stopBits: 1
@@ -114,7 +141,7 @@ $('.btn-submit').click((data) => {
     port.on('open', () =>{
         console.log('serialport open success')
 
-        $('.receive-windows').text(`串口已打开: ${COM}, 波特率: ${BaudRate}`);
+        $('.receive-windows').text(`串口已打开: ${COM}, 波特率: ${baudRate}`);
         $('.receive-windows').append('<br/>=======================================<br/>');
 
         //定时器，用于接收数据的判断->自动换行

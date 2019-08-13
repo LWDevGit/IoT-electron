@@ -1,14 +1,12 @@
 ﻿# IoT-electron
 ## 版本
->1.0.0 (007)
+>1.0.0 (008)
 ## 版本描述
 >增加的功能
-- 接收的ascii和hex转换
+- 动态刷新COM
 >准备增加的功能
-- 校验位，数据位，停止位的设置
 - 波特率的动态修改
 - 自定义波特率
-- 动态刷新COM
 - 定时发送数据
 
 ## 说明
@@ -20,6 +18,7 @@
 ![image](https://github.com/LinWeiGitHub/IoT-electron/blob/master/ui.png)
 
 ## 使用
+>windows
 - step1 工具准备
     - CMD管理员模式
     - 安装node-gyp
