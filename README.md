@@ -1,6 +1,6 @@
 ﻿# IoT-electron
 ## 版本
->1.0.0 (008)
+>1.0.0 (009)
 ## 版本描述
 >增加的功能
 - 动态刷新COM
@@ -38,14 +38,14 @@
 
 ## 参考资料
 
-### 开发指南
+>开发指南
 - [electron文档](https://electronjs.org/docs)
 - [serialport文档](https://serialport.io/docs/guide-usage)
 - [jQuery教程](https://www.runoob.com/jquery/jquery-tutorial.html)
 - [node.js文档 - Buffers and Character Encodings](https://nodejs.org/api/buffer.html#buffer_buffers_and_character_encodings)
 
-### 开源代码
+>开源代码
 - [electron-serialport](https://github.com/PowerDos/electron-serialport)
 
-### 技术文章
+>技术文章
 - [在electron中使用node-serialport的正确姿势](https://github.com/FakeFullStack/QA/issues/2)

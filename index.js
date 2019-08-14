@@ -47,6 +47,7 @@ function wrapEvent() {
                     $('.receive-windows').append(serialHexDataToDis);
 
                     serialHexDataToDis = '';
+                    serialHexData = [];
                 }
 
                 //自动换行
